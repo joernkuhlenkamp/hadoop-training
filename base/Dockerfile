@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 debian:9
+FROM --platform=linux/amd64 python:3.7-stretch
 
 MAINTAINER Ivan Ermilov <ivan.s.ermilov@gmail.com>
 MAINTAINER Giannis Mouchakis <gmouchakis@iit.demokritos.gr>
