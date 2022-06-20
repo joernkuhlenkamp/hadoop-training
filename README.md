@@ -8,17 +8,17 @@ While it should work on a number of additonal setups, additional configuration
 and sizing might be necessary.
 
 - Computing Resources
-- - Architecture: amd64
-- - CPU: 8 cores
-- - Memory: 16 GB
-- - Disk: 1 TB
+  - Architecture: amd64
+  - CPU: 8 cores
+  - Memory: 16 GB
+  - Disk: 1 TB
 - OS
-- - Ubuntu: 20.04 ARM64
-- - macOs Monterey: 12.01
+  - Ubuntu: 20.04 ARM64
+  - macOs Monterey: 12.01
 - Docker
-- - [Engine](https://docs.docker.com/engine/): 20.10.16
-- - [Desktop](https://www.docker.com/products/docker-desktop/): 4.9.1
-- - [Compose](https://docs.docker.com/compose/): v2.6.0
+  - [Engine](https://docs.docker.com/engine/): 20.10.16
+  - [Desktop](https://www.docker.com/products/docker-desktop/): 4.9.1
+  - [Compose](https://docs.docker.com/compose/): v2.6.0
 - Git
 
 
@@ -138,3 +138,7 @@ The available configurations are:
 - `/etc/hadoop/mapred-site.xml`:  `MAPRED_CONF`
 
 If you need to extend some other configuration file, refer to `base/entrypoint.sh` bash script.
+
+## Exercises
+ The `/exercises` folder contains a number of practical exercises. To that extent,
+ the folder `/exercises/datasets` contains testdata and the 
