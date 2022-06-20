@@ -2,7 +2,7 @@ version: "3"
 
 services:
   namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    image: pdt2022/hadoop-namenode:2.0.0-hadoop3.2.1-java8
     container_name: namenode
     restart: always
     ports:
@@ -10,13 +10,14 @@ services:
       - 9000:9000
     volumes:
       - hadoop_namenode:/hadoop/dfs/name
+      - ./exercises:/exercises
     environment:
       - CLUSTER_NAME=test
     env_file:
       - ./hadoop.env
 
   datanode:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    image: pdt2022/hadoop-datanode:2.0.0-hadoop3.2.1-java8
     container_name: datanode
     hostname: datanode
     restart: always
@@ -33,7 +34,7 @@ services:
       - ./hadoop.env
   
   resourcemanager:
-    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    image: pdt2022/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
     container_name: resourcemanager
     hostname: resourcemanager
     restart: always
@@ -48,7 +49,7 @@ services:
       - ./hadoop.env
 
   nodemanager1:
-    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    image: pdt2022/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
     container_name: nodemanager
     hostname: nodemanager1
     restart: always
@@ -64,7 +65,7 @@ services:
       - ./hadoop.env
   
   historyserver:
-    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+    image: pdt2022/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
     container_name: historyserver
     hostname: historyserver
     restart: always
