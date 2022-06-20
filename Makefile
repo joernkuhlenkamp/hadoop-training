@@ -10,6 +10,14 @@ build:
 	docker build -t pdt2022/hadoop-historyserver:$(current_branch) ./historyserver
 	docker build -t pdt2022/hadoop-submit:$(current_branch) ./submit
 
+push:
+	docker push pdt2022/hadoop-base:$(current_branch)
+	docker push pdt2022/hadoop-namenode:$(current_branch)
+	docker push pdt2022/hadoop-datanode:$(current_branch)
+	docker push pdt2022/hadoop-resourcemanager:$(current_branch)
+	docker push pdt2022/hadoop-nodemanager:$(current_branch)
+	docker push pdt2022/hadoop-historyserver:$(current_branch)
+
 wordcount:
 	docker build -t hadoop-wordcount ./submit
 	docker run --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} pdt2022/hadoop-base:2.0.0-hadoop3.2.1-java8 hdfs dfs -mkdir -p /input/
