@@ -68,11 +68,11 @@ docker volume prune
 Nodes in the cluster expose Web UIs that are accessible from the container host
 using a web browser, e.g., Google Chrome, and the links below:
 
-* Namenode: [LINK](http://localhost:9870/dfshealth.html#tab-overview)
-* History server: [LINK](http://localhost:8188/applicationhistory)
-* Datanode: [LINK](http://localhost:9864/)
-* Nodemanager: [LINK](http://localhost:8042/node)
-* Resource manager: [LINK](http://localhost:8088/)
+* NameNode: [LINK](http://localhost:9870/dfshealth.html#tab-overview)
+* HistoryServer: [LINK](http://localhost:8188/applicationhistory)
+* DataNode: [LINK](http://localhost:9864/)
+* NodeManager: [LINK](http://localhost:8042/node)
+* ResourceManager: [LINK](http://localhost:8088/)
 
 Within the cluster network, nodes communicate with dedicated ip addresses. Hence,
 some links within the web UI might not work as expected. However, to access a 
@@ -140,5 +140,49 @@ The available configurations are:
 If you need to extend some other configuration file, refer to `base/entrypoint.sh` bash script.
 
 ## Exercises
- The `/exercises` folder contains a number of practical exercises. To that extent,
- the folder `/exercises/datasets` contains testdata and the 
+ The `/exercises` folder contains a number of practical exercises.
+ Each exercise comprise two types of artifacts business logic and data for
+ processing. Business logic is stored in the subfolder `/exercises/{number}/app`
+ and data in `/exercises/{number}/data`.
+
+## Container Host Setup
+If no suitable container host is available, another suitable setup is a public
+IaaS cloud provider. As an example, we illustrate the setup on AWS.
+
+### Provision Instance
+Provision an EC2 instance using the web console or the API.
+- Architecture: `64Bit x86`
+- Image: `ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-20220609`
+- Instance Type: `t3.xlarge`
+- Storage Volume: `100 GB`
+
+### Install Docker
+Follow the official [Docker Instructions](https://docs.docker.com/engine/install/ubuntu/)
+
+### Clone Git Repository
+```
+git clone https://github.com/joernkuhlenkamp/hadoop-training.git
+```
+
+### Configure Firewall
+In order to access the UIs and APIs, we must open the corresponding ports:
+| Port  | Usage      |
+|-------|------------|
+|  8042 | NodeManager |
+|  8088 | ResourceManager |
+|  8188 | HistoryServer |
+|  9864 | DataNode |
+|  9870 | NameNode   |
+
+
+### Prepare SSH Key
+Create a new key pair `hadoop-training.pem`. Change rights of your SSH key 
+to 400 (and move to `.ssh` folder):
+```
+chmod 400 hadoop-training.pem
+```
+
+### Connect to Instance
+```
+ssh -i "hadoop-training.pem" ubuntu@ec2-46-137-71-72.eu-west-1.compute.amazonaws.com
+```
