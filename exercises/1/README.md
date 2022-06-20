@@ -40,10 +40,10 @@ echo "foo foo quux labs foo bar quux" | ./mapper.py | ./reducer.py
 
 ```
 mapred streaming \
-  -input /input2 \
-  -output /output11 \
+  -input /exercise/1/input \
+  -output /exercise/1/output \
   -mapper mapper.py \
   -reducer reducer.py \
-  -file /exercises/apps/ex1/mapper.py \
-  -file /exercises/apps/ex1/reducer.py
+  -file /exercises/1/app/mapper.py \
+  -file /exercises/1/app/reducer.py
 ```
