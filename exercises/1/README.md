@@ -107,11 +107,11 @@ hdfs dfs -appendToFile <localsrc> ... <dst>
 
 
 ### **File Metadata**
-#### - Show Information on File or Directory [[Docs: -ls](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#ls)]
+#### - Show Information on File or Directory [[Docs: -ls](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#ls)] Options: [-C] [-d] [-h] [-q] [-R] [-t] [-S] [-r] [-u] [-e]
 ```
 hdfs dfs -ls
 ```
-Options: [-C] [-d] [-h] [-q] [-R] [-t] [-S] [-r] [-u] [-e]
+
 
 
 #### - Copies Source Paths [[Docs: -cat](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#cat)]
