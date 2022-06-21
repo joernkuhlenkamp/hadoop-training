@@ -29,6 +29,8 @@ and sizing might be necessary.
 
 
 ## Quick Start
+(All Docker commands might require `sudo`.)
+
 Deploy local cluster <span style="color:grey">(container host)</span>:
 ```
 docker compose up
