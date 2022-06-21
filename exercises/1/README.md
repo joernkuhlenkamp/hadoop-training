@@ -1,5 +1,7 @@
 # Exercise 1 - HDFS
 
+
+
 ## HDFS
 
 #### Show Version [[Docs: version](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#version)]
@@ -44,6 +46,7 @@ hdfs classpath
 hdfs dfs -mkdir /exercise
 ```
 
+
 #### Remove Directory [[Docs: -rmdir](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#rmdir)]
 ```
 hdfs dfs -rmdir /exercise
@@ -56,6 +59,7 @@ hdfs dfs -rmdir /exercise
 hdfs dfs -rm
 ```
 Options: `[-f] [-r |-R] [-skipTrash] [-safely]`
+
 
 
 ### File Transfer
@@ -71,10 +75,12 @@ hdfs dfs URI
 ```
 Options: `[-ignorecrc] [-crc]`
 
+
 #### [[Docs: -moveFromLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#moveFromLocal)]
 ```
 
 ```
+
 
 #### Not Implemented [[Docs: -moveToLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#moveToLocal)]
 ```
@@ -83,11 +89,13 @@ hdfs dfs -moveToLocal
 # moveToLocal: Option '-moveToLocal' is not implemented yet.
 ```
 
+
 #### Copy Files from FS to DFS [[Docs: -put](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#put)]
 ```
 hdfs dfs -put /exercises/0/data/imdb.csv /
 ```
 Options: `[-f] [-p] [-l] [-d]`
+
 
 #### Copy Files from Source to Destination [[Docs: -cp](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#cp)]
 ```
@@ -95,10 +103,13 @@ hdfs dfs -cp URI [URI ...] <dest>
 ```
 Options: `[-f] [-p]`
 
+
 #### [[Docs: -appendToFile](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#appendToFile)]
 ```
 
 ```
+
+
 ### File Metadata
 #### Show Information on File or Directory [[Docs: -ls](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#ls)]
 ```
@@ -112,11 +123,11 @@ Options: [-C] [-d] [-h] [-q] [-R] [-t] [-S] [-r] [-u] [-e]
 hdfs dfs -cat URI
 ```
 
+
 #### Get Checksum Information [[Docs: -checksum](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#checksum)]
 ```
 hdfs dfs -checksum URI
 ```
-
 
 
 #### Count #Directories, #Files, and #Bytes [[Docs: -count]()]
@@ -124,7 +135,6 @@ hdfs dfs -checksum URI
 hdfs dfs -count 
 ```
 Options: `[-q] [-h] [-v] [-x] [-t [<storage type>]] [-u] [-e]`
-
 
 
 #### Displays Free Space [[Docs: -df](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#df)]
@@ -140,6 +150,7 @@ hadoop fs -du /
 ```
 Options: `[-s] [-h] [-v] [-x]`
 
+
 ### Manage File Access Rights
 
 #### Change Group Association [[Docs: -chgrp](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#chgrp)]
@@ -148,11 +159,13 @@ hdfs dfs -chgrp URI
 ```
 Options: `[-R]`
 
+
 #### Change Permission [[Docs: -chmod](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#chmod)]
 ```
 hdfs dfs -chmod URI
 ```
 Options: `[-R]`
+
 
 #### Change Owner [[Docs: -chown](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#chmod)]
 ```
