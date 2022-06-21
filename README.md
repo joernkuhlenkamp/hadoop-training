@@ -84,9 +84,9 @@ View running containers <span style="color:grey">(container host)</span>:
 docker compose ps
 ```
 
-Bash shell into a specific cluster node <span style="color:grey">(container host)</span>:
+Bash shell into the namenode container <span style="color:grey">(container host)</span>:
 ```
-docker exec -it ${nodename} bash
+docker exec -it nodename bash
 ```
 
 Leave shell and return to container host <span style="color:grey">(container/node)</span>:
