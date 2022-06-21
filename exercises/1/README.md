@@ -21,7 +21,7 @@ hdfs groups
 
 #### - Check FS Health [[Docs: fsck](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#fsck)]
 ```
-hdfs fsck /exercise
+hdfs fsck /
 ```
 
 #### - Gets Configuration Information [[Docs: getconf](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#getconf)]
@@ -43,21 +43,16 @@ hdfs classpath
 
 #### - Create Directory [[Docs: -mkdir](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#mkdir)]
 ```
-hdfs dfs -mkdir /exercise
+hdfs dfs -mkdir /test
 ```
 
 
 #### - Remove Directory [[Docs: -rmdir](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#rmdir)]
 ```
-hdfs dfs -rmdir /exercise
+hdfs dfs -rmdir /test
 ```
 - Empty vs not empty
 
-
-#### - Remove Files [[Docs: -rm]](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#rm) Options: `[-f] [-r |-R] [-skipTrash] [-safely]`
-```
-hdfs dfs -rm
-```
 
 
 
@@ -105,6 +100,10 @@ hdfs dfs -cp URI [URI ...] <dest>
 hdfs dfs -appendToFile <localsrc> ... <dst>
 ```
 
+#### - Remove Files [[Docs: -rm]](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#rm) Options: `[-f] [-r |-R] [-skipTrash] [-safely]`
+```
+hdfs dfs -rm
+```
 
 ### **File Metadata**
 #### - Show Information on File or Directory [[Docs: -ls](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#ls)] Options: [-C] [-d] [-h] [-q] [-R] [-t] [-S] [-r] [-u] [-e]
