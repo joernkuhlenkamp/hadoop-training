@@ -9,7 +9,7 @@ docker exec -it namenode bash
 ## Local Testing
 In the container, test the app without using Hadoop.
 ```
-cat /exercises/1/data/imdb.csv | /exercises/1/app/mapper.py | /exercises/1/app/reducer.py
+cat /exercises/0/data/imdb.csv | /exercises/0/app/mapper.py | /exercises/0/app/reducer.py
 ```
 
 
