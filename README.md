@@ -23,9 +23,9 @@ and sizing might be necessary.
 
 
 ## Setup
-1. Install Docker (Desktop)
-2. Install Git
-3. Clone repository
+1. Install Git
+2. Install [Docker](https://docs.docker.com/engine/install/ubuntu/)
+3. Clone [repository](https://github.com/joernkuhlenkamp/hadoop-training)
 
 
 ## Quick Start
