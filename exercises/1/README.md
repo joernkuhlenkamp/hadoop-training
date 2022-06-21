@@ -2,34 +2,34 @@
 
 
 
-## HDFS
+## **HDFS**
 
-#### Show Version [[Docs: version](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#version)]
+#### - Show Version [[Docs: version](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#version)]
 ```
 hdfs version
 ```
 
-#### Display Computed Hadoop Environment Variables [[Docs: envvars](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#envvars)]
+#### - Display Computed Hadoop Environment Variables [[Docs: envvars](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#envvars)]
 ```
 hdfs envvars
 ```
 
-#### Show Group Information [[Docs: groups](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#groups)]
+#### - Show Group Information [[Docs: groups](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#groups)]
 ```
 hdfs groups
 ```
 
-#### Check FS Health [[Docs: fsck](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#fsck)]
+#### - Check FS Health [[Docs: fsck](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#fsck)]
 ```
 hdfs fsck /exercise
 ```
 
-#### Gets Configuration Information [[Docs: getconf](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#getconf)]
+#### - Gets Configuration Information [[Docs: getconf](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#getconf)]
 ```
 hdfs getconf -namenodes
 ```
 
-#### Get Class Path [[Docs: classpath](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#classpath)]
+#### - Get Class Path [[Docs: classpath](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#classpath)]
 ```
 hdfs classpath
 ```
@@ -37,52 +37,50 @@ hdfs classpath
 
 
 
-## HDFS DFS
+## **HDFS DFS**
 
-### Directory Structure
+### **Directory Structure**
 
-#### Create Directory [[Docs: -mkdir](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#mkdir)]
+#### - Create Directory [[Docs: -mkdir](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#mkdir)]
 ```
 hdfs dfs -mkdir /exercise
 ```
 
 
-#### Remove Directory [[Docs: -rmdir](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#rmdir)]
+#### - Remove Directory [[Docs: -rmdir](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#rmdir)]
 ```
 hdfs dfs -rmdir /exercise
 ```
 - Empty vs not empty
 
 
-#### Remove Files [[Docs: -rm]](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#rm)
+#### - Remove Files [[Docs: -rm]](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#rm) Options: `[-f] [-r |-R] [-skipTrash] [-safely]`
 ```
 hdfs dfs -rm
 ```
-Options: `[-f] [-r |-R] [-skipTrash] [-safely]`
 
 
 
-### File Transfer
+### **File Transfer**
 
-#### Upload Lokal File [[Docs: -copyFromLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#copyFromLocal)]
+#### - Upload Lokal File [[Docs: -copyFromLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#copyFromLocal)]
 ```
 hdfs dfs -copyFromLocal /exercises/1/data/imdb.csv /exercise/1/input
 ```
 
-#### Copy File to Client [[Docs: -copyToLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#copyToLocal)]
+#### - Copy File to Client [[Docs: -copyToLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#copyToLocal)] Options: `[-ignorecrc] [-crc]`
 ```
 hdfs dfs URI
 ```
-Options: `[-ignorecrc] [-crc]`
 
 
-#### [[Docs: -moveFromLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#moveFromLocal)]
+#### - Move File [[Docs: -moveFromLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#moveFromLocal)]
+```
+hdfs dfs -moveFromLocal <local> <src>
 ```
 
-```
 
-
-#### Not Implemented [[Docs: -moveToLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#moveToLocal)]
+#### - Not Implemented [[Docs: -moveToLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#moveToLocal)]
 ```
 hdfs dfs -moveToLocal
 
@@ -90,85 +88,78 @@ hdfs dfs -moveToLocal
 ```
 
 
-#### Copy Files from FS to DFS [[Docs: -put](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#put)]
+#### - Copy Files from FS to DFS [[Docs: -put](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#put)] Options: `[-f] [-p] [-l] [-d]`
 ```
 hdfs dfs -put /exercises/0/data/imdb.csv /
 ```
-Options: `[-f] [-p] [-l] [-d]`
 
 
-#### Copy Files from Source to Destination [[Docs: -cp](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#cp)]
+#### - Copy Files from Source to Destination [[Docs: -cp](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#cp)] Options: `[-f] [-p]`
 ```
 hdfs dfs -cp URI [URI ...] <dest>
 ```
-Options: `[-f] [-p]`
 
 
-#### [[Docs: -appendToFile](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#appendToFile)]
+#### - Append local fileto target file [[Docs: -appendToFile](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#appendToFile)]
+```
+hdfs dfs -appendToFile <localsrc> ... <dst>
 ```
 
-```
 
-
-### File Metadata
-#### Show Information on File or Directory [[Docs: -ls](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#ls)]
+### **File Metadata**
+#### - Show Information on File or Directory [[Docs: -ls](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#ls)]
 ```
 hdfs dfs -ls
 ```
 Options: [-C] [-d] [-h] [-q] [-R] [-t] [-S] [-r] [-u] [-e]
 
 
-#### Copies Source Paths [[Docs: -cat](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#cat)]
+#### - Copies Source Paths [[Docs: -cat](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#cat)]
 ```
 hdfs dfs -cat URI
 ```
 
 
-#### Get Checksum Information [[Docs: -checksum](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#checksum)]
+#### - Get Checksum Information [[Docs: -checksum](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#checksum)]
 ```
 hdfs dfs -checksum URI
 ```
 
 
-#### Count #Directories, #Files, and #Bytes [[Docs: -count]()]
+#### - Count #Directories, #Files, and #Bytes [[Docs: -count]()] Options: `[-q] [-h] [-v] [-x] [-t [<storage type>]] [-u] [-e]`
 ```
 hdfs dfs -count 
 ```
-Options: `[-q] [-h] [-v] [-x] [-t [<storage type>]] [-u] [-e]`
 
 
-#### Displays Free Space [[Docs: -df](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#df)]
+#### - Displays Free Space [[Docs: -df](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#df)] Options: `[-h]`
 ```
 hdfs dfs -df URI
 ```
-Options: `[-h]`
 
 
-#### Displays Sizes of Files and Directories [[Docs: -du]()]
+#### - Displays Sizes of Files and Directories [[Docs: -du]()] Options: `[-s] [-h] [-v] [-x]`
 ```
 hadoop fs -du /
 ```
-Options: `[-s] [-h] [-v] [-x]`
 
 
-### Manage File Access Rights
 
-#### Change Group Association [[Docs: -chgrp](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#chgrp)]
+### **Manage File Access Rights**
+
+#### - Change Group Association [[Docs: -chgrp](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#chgrp)] Options: `[-R]`
 ```
 hdfs dfs -chgrp URI
 ```
-Options: `[-R]`
 
 
-#### Change Permission [[Docs: -chmod](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#chmod)]
+#### - Change Permission [[Docs: -chmod](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#chmod)] Options: `[-R]`
 ```
 hdfs dfs -chmod URI
 ```
-Options: `[-R]`
 
 
-#### Change Owner [[Docs: -chown](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#chmod)]
+#### - Change Owner [[Docs: -chown](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#chmod)] Options: `[-R]`
 ```
 hdfs dfs -chown URI
 ```
-Options: `[-R]`
