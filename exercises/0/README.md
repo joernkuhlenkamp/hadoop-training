@@ -1,4 +1,4 @@
-# Exercise 1 - Word Count (small)
+# Exercise 0 - Word Count (small)
 
 ## Init
 Start the cluster. Log into the `namenode` container:
