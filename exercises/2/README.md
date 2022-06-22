@@ -1,6 +1,6 @@
 # Exercise 1 - Word Count 
 
-## Init
+## Setup
 Start the cluster. Log into the `namenode` container:
 ```
 docker exec -it namenode bash
@@ -16,7 +16,7 @@ Upload input files to HDFS:
 hdfs dfs -copyFromLocal /exercises/2/data/* /exercise/2/input
 ```
 
-# Test Programm locally
+# Local MapReduce
 In the container, test the app without using Hadoop. To that extent, it is always
 usefull to have a small representative dataset at hand.
 
@@ -30,7 +30,7 @@ Test with a custom file:
 cat /exercises/2/data/images.csv | /exercises/2/app/mapper-csv.py | sort | /exercises/2/app/reducer-csv.py
 ```
 
-# Run MapReduce Programm (Shell Mapper/Reducer)
+# MapReduce (Shell)
 
 ```
 mapred streaming \
@@ -44,7 +44,7 @@ mapred streaming \
 hdfs dfs -rm -R /exercise/2/output/wordcountplus
 ```
 
-# Run MapReduce Programm (Python Mapper/Reducer)
+# MapReduce (Python)
 
 ## Value Count
 We count the occurances of the same values in the images.csv file.
