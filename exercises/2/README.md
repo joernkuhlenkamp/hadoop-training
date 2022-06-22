@@ -6,55 +6,116 @@ Start the cluster. Log into the `namenode` container:
 docker exec -it namenode bash
 ```
 
-## Local Testing
-In the container, test the app without using Hadoop.
+## Prepare HDFS
+Create folders for job inputs:
 ```
-cat /exercises/1/data/imdb.csv | /exercises/1/app/mapper.py | /exercises/1/app/reducer.py
+hdfs dfs -mkdir -p /exercise/2/input
 ```
-
-
-
-[FS Docs](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html): [-mkdir](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#mkdir)
+Upload input files to HDFS:
 ```
-hdfs dfs -mkdir /exercise
-hdfs dfs -mkdir /exercise/1
-hdfs dfs -mkdir /exercise/1/input
+hdfs dfs -copyFromLocal /exercises/2/data/* /exercise/2/input
 ```
 
-[FS Docs](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html): [-copyFromLocal](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#copyFromLocal)
+# Test Programm locally
+In the container, test the app without using Hadoop. To that extent, it is always
+usefull to have a small representative dataset at hand.
+
+Test with a custom string:
 ```
-hdfs dfs -copyFromLocal exercises/1/data/imdb.csv /exercise/1/input
+echo "green,red,blue,yellow,blue,green,blue" | /exercises/2/app/mapper-csv.py | sort | /exercises/2/app/reducer-csv.py
 ```
 
+Test with a custom file:
+```
+cat /exercises/2/data/images.csv | /exercises/2/app/mapper-csv.py | sort | /exercises/2/app/reducer-csv.py
+```
+
+# Run MapReduce Programm (Shell Mapper/Reducer)
 
 ```
 mapred streaming \
-  -input /input \
-  -output /output \
+  -input /exercise/2/input/images.csv \
+  -output /exercise/2/output/wordcountplus \
   -mapper /bin/cat \
   -reducer /usr/bin/wc
 ```
 
 ```
-mapred streaming \
-  -input /input \
-  -output /output6 \
-  -mapper myAggregatorForKeyCount.py \
-  -reducer aggregate \
-  -file /exercises/apps/ex1/myAggregatorForKeyCount.py
+hdfs dfs -rm -R /exercise/2/output/wordcountplus
 ```
 
-TEST Programm:
-```
-echo "foo foo quux labs foo bar quux" | ./mapper.py | ./reducer.py
-```
+# Run MapReduce Programm (Python Mapper/Reducer)
 
+## Value Count
+We count the occurances of the same values in the images.csv file.
 ```
 mapred streaming \
-  -input /exercise/1/input \
-  -output /exercise/1/output \
-  -mapper mapper.py \
-  -reducer reducer.py \
-  -file /exercises/1/app/mapper.py \
-  -file /exercises/1/app/reducer.py
+  -input /exercise/2/input \
+  -output /exercise/2/output/valuecount \
+  -mapper mapper-csv.py \
+  -reducer reducer-csv.py \
+  -file /exercises/2/app/mapper-csv.py \
+  -file /exercises/2/app/reducer-csv.py
+```
+
+Cleanup HDFS:
+```
+hdfs dfs -rm -R /exercise/2/output/valuecount
+```
+
+## Combiner
+We can use a combiner to reduce the amount of data for shuffling phase:
+```
+mapred streaming \
+  -input /exercise/2/input \
+  -output /exercise/2/output/combiner \
+  -mapper mapper-csv.py \
+  -combiner 'python reducer-csv.py' \
+  -reducer reducer-csv.py \
+  -file /exercises/2/app/mapper-csv.py \
+  -file /exercises/2/app/reducer-csv.py
+```
+
+Cleanup HDFS:
+```
+hdfs dfs -rm -R /exercise/2/output/combiner
+```
+
+## Increase Reducers
+Horizontally scaling reducers can lift memory pressure on reducer nodes.
+It results in multiple output files.
+```
+mapred streaming \
+  -input /exercise/2/input \
+  -output /exercise/2/output/tworeducers \
+  -mapper mapper-csv.py \
+  -reducer reducer-csv.py \
+  -numReduceTasks 2 \
+  -file /exercises/2/app/mapper-csv.py \
+  -file /exercises/2/app/reducer-csv.py
+```
+
+List files in output directory:
+```
+hdfs dfs -ls /exercise/2/output/tworeducers
+```
+
+Cleanup HDFS:
+```
+hdfs dfs -rm -R /exercise/2/output/tworeducers
+```
+
+## Broadcast Joint
+```
+mapred streaming \
+  -input /exercise/2/input/images.csv \
+  -output /exercise/2/output/join \
+  -mapper mapper-join.py \
+  -file /exercises/2/app/mapper-join.py \
+  -file /exercises/2/data/processes.csv
+```
+
+Cleanup HDFS:
+```
+hdfs dfs -rm -R /exercise/2/output/join
 ```
