@@ -264,3 +264,10 @@ hdfs dfs -chmod URI
 ```
 hdfs dfs -chown URI
 ```
+
+### **Trade-offs**
+
+#### - Replication Factor [[Docs: -setrep](https://hadoop.apache.org/docs/r3.2.1/hadoop-project-dist/hadoop-common/FileSystemShell.html#setrep)] Options: `[-R] [-w]`
+```
+hdfs dfs -setrep 1 /exercise/1/input/2022-06-03.log
+```
