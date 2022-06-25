@@ -1,4 +1,4 @@
-# Exercise 1 - Word Count 
+# Exercise 2 - MapReduce
 
 ## Setup
 Start the cluster. Log into the `namenode` container:
