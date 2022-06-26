@@ -1,4 +1,4 @@
-# (Py)Spark
+# Spark
 
 ## 1. Setup
 Clone repository:
@@ -46,6 +46,12 @@ Start PySpark shell:
 /spark/bin/pyspark
 ```
 
+Run OS command:
+```
+import os
+os.system("ls -lsa /")
+```
+
 Read lines from `fruits.csv`:
 ```
 lines = sc.textFile("/fruits.csv")
@@ -77,9 +83,7 @@ Questions:
 - Does `cherry_lines.first()` throw an error if the file does not exists?
 - What holds the variable `sc`?
 
-## 3. 
-
-### 3.1 Standalone Application
+## 3. Standalone Application
 Create `my_script.py`
 ```
 from pyspark import SparkConf, SparkContext
@@ -98,14 +102,9 @@ conf = SparkConf().setMaster("local").setAppName("My App")
 sc = SparkContext(conf = conf)
 
 
-## 4. Data Types and File Formats
+## 4. RDD Basics
 
-Persist RDD:
-```
-cherry_lines.persist
-```
-
-### Creating RDDs
+### 4.1 Creating RDDs
 
 Create RDD from memory:
 ```
@@ -122,10 +121,8 @@ fruit_rdd = sc.textFile("/fruits.csv")
 type(fruit_rdd)
 ```
 
-### Transformations vs Actions
 
-
-#### Transformations
+### 4.2 Transformations
 ```
 lines = sc.textFile("/fruits.csv")
 cherry_lines = lines.filter(lambda line: 'cherry' in line)
@@ -183,7 +180,8 @@ substract_rdd = rdd1.subtract(rdd2)
 cartesian_rdd = rdd1.cartesian(rdd2)
 ```
 
-#### Actions
+
+### 4.3 Actions
 
 ```
 print(f'Input had {cocktail_fruits.count()} fruits')
@@ -271,7 +269,7 @@ Questions:
 
 
 
-#### **Persisting**
+### 4.4 Persisting
 [persist](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.persist.html) and [StorageLevel](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.StorageLevel.html):
 ```
 rdd.persist()
@@ -294,3 +292,409 @@ Questions:
 - What does `rdd2.is_cached` return?
 - Does calling `persist` trigger a job?
 - What happens if the size of partitions cached in memory exceeds available memory? (hint: LRU)
+
+
+
+## 5. Key/Value Pairs
+
+### 5.1 Creation
+From RDD:
+```
+fruits_list = ["melone green", "tomato red", "banana yellow"]
+
+fruits_list_rdd = sc.parallelize(fruits_list)
+
+ruits_kv_rdd = fruits_list_rdd.map(lambda x: (x.split(" ")[0], x))
+
+fruits_kv_rdd.collect()
+```
+
+From dictionary:
+```
+fruits_dict = {"melone": "green", "tomato": "tomato", "banana": "yellow"}
+
+fruits_kv_rdd = sc.parallelize(dictionary)
+```
+
+
+### 5.2 Transformations
+#### 5.2.1 Single RDD
+Create small test RDD:
+```
+rdd = sc.parallelize({("A", 2), ("b", 4), ("b", 6)})
+```
+
+[reduceByKey](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.reduceByKey.html):
+```
+reduce_by_key_rdd = rdd.reduceByKey(lambda x, y: x + y)
+```
+
+Questions:
+- Is the output of `reduceByKey` sorted by key?
+- How does the execution of `reduceByKey` related to MapReduce combiners?
+- How can we instruct Spark to increase the number of partitions to use?
+
+
+[groupByKey](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.groupByKey.html):
+```
+group_by_key_rdd = rdd.groupByKey()
+
+group_by_key_rdd_len = rdd.groupByKey().mapValues(len).collect()
+
+group_by_key_rdd_list = rdd.groupByKey().mapValues(list).collect()
+```
+Questions:
+- Would you prefer `groupByKey` or `reduceByKey` for a performand aggregation over a key?
+- Why do we use `mapValues(list)`
+
+[combineBy Key](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.combineByKey.html):
+```
+def append(x, y):
+    x.append(y)
+    return x
+
+def extend(x, y):
+    x.extend(y)
+    return x
+
+combine_ by_key_rdd = rdd.combineByKey(
+    lambda x: [x],
+    append,
+    extend
+)
+```
+Questions:
+- Must the input pair's value be of the same type as the output pair's value?
+
+
+[flatMapValues](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.flatMapValues.html):
+```
+flat_map_values_rdd = rdd.flatMapValues(
+    lambda x: x
+)
+```
+
+[keys](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.keys.html):
+```
+keys_rdd = rdd.keys()
+```
+Questions:
+- Does `keys` return datastructure compare to a list or set?
+
+
+[values](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.values.html):
+```
+values_rdd = rdd.values()
+```
+
+[sortByKey](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.sortByKey.html):
+```
+sort_by_key_rdd = rdd.sortByKey()
+
+sort_by_key_rdd_asc = rdd.sortByKey(ascending=False)
+
+sort_by_key_rdd_parts = rdd.sortByKey(False, 2)
+```
+
+#### 5.2.2 Two RDDs
+Create test data:
+```
+rdd1 = sc.parallelize({("a", 2), ("b", 4), ("b", 6)})
+rdd2 = sc.parallelize({("b", 9)})
+```
+
+[subtractByKey](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.subtractByKey.html):
+```
+subtract_by_key_rdd = rdd1.subtractByKey(rdd2)
+```
+
+[join](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.join.html):
+```
+join_rdd = rdd1.join(rdd2)
+```
+
+[rightOuterJoin](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.rightOuterJoin.html):
+```
+right_outer_join_rdd = rdd2.rightOuterJoin(rdd1)
+```
+
+[leftOuterJoin](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.leftOuterJoin.html):
+```
+left_outer_join_rdd = rdd1.leftOuterJoin(rdd2)
+```
+
+[cogroup](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.cogroup.html):
+```
+cogroup_rdd = rdd1.cogroup(rdd2)
+
+cogroup_list = [(x, tuple(map(list, y))) for x, y in sorted(list(rdd1.cogroup(rdd2).collect()))]
+```
+
+### 5.3 Actions
+[countByKey](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.countByKey.html):
+```
+count_by_key = rdd1.countByKey()
+
+count_by_key_items = sorted(rdd1.countByKey().items())
+```
+
+[collectAsMap](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.collectAsMap.html):
+```
+collect_as_map = rdd1.collectAsMap()
+```
+
+[lookup](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.lookup.html):
+```
+lookup_values = rdd1.lookup('b')
+
+l = range(1000)
+number_rdd = sc.parallelize(zip(l, l), 10)
+number_rdd.lookup(42)
+
+sorted_rdd = number_rdd.sortByKey()
+sorted_rdd.lookup(42)
+
+sorted_rdd.lookup(1024)
+```
+
+Questions:
+- What happens if key pairs'S values are tupels, e.g., ('a',)
+
+## 6. Partioning
+
+Batteries-included Partitioners:
+- HashPartitioner
+- RangePartitioner
+
+[getNumPartitions](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.getNumPartitions.html)
+```
+rdd = sc.parallelize(range(20))
+rdd.getNumPartitions()
+
+rdd = sc.parallelize(range(1_000_000))
+rdd.getNumPartitions()
+```
+
+[glom](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.partitionBy.html)
+```
+rdd = sc.parallelize(range(20))
+glom_rdd = rdd.glom()
+```
+
+[partitionBy](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.partitionBy.html)
+```
+pairs_rdd = sc.parallelize([1, 2, 3, 4, 2, 4, 1]).map(lambda x: (x, x))
+pairs_rdd.glom().collect()
+
+pairs_rdd.partitionBy(2).glom().collect()
+```
+
+[repartition](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.repartition.html)
+```
+rdd = sc.parallelize(range(20), 4)
+rdd.getNumPartitions()
+
+rdd.repartition(2).getNumPartitions().getNumPartitions()
+```
+
+Example functions leveraging knowledge on a partitioner:
+- `cogroup()`
+- `groupWith()`
+- `join()`
+- `leftOuterJoin()`
+- `rightOuter Join()`
+- `groupByKey()`
+- `reduceByKey()`
+- `combineByKey()`
+- `lookup()`
+
+Example functions that return a partitioner:
+- `cogroup()`
+- `groupWith()`
+- `join()`
+- `leftOuterJoin()`
+- `rightOuterJoin()`
+- `groupByKey()`
+- `reduceByKey()`
+- `combineByKey()`
+- `partitionBy()`
+- `sort()`
+
+
+Questions:
+- What is the result of `sc.parallelize(["AB", "AB", "AB"], 5).map(lambda x: (x, x)).glom().collect()`?
+- What is the result of `sc.parallelize(["AB", "AB", "AB"], 5).map(lambda x: (x, x)).groupByKey().glom().collect()`?
+- True or False: It is always better to use more general function, e.g., `map()`
+
+## 7. External IO
+
+### 7.1 File Formats
+
+#### **7.1.1 Text Files**
+
+Prepare test data:
+Make directory:
+```
+mkdir /food/
+```
+
+Create testfile `fruits.csv` in folder `/food/`:
+```
+echo "melone, 1, True" > /food/fruits.csv
+echo "cherry, 2, True" >> /food/fruits.csv
+echo "tomato, 3, False" >> /food/fruits.csv
+```
+
+Create testfile `veggie.csv` in folder `/food/`:
+```
+echo "cucumber, 1, False" > /food/veggies.csv
+echo "carrot, 2, False" >> /food/veggies.csv
+```
+
+Load a single file: [textFile](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.SparkContext.textFile.html)
+```
+input = sc.textFile("file:///fruits.csv")
+```
+
+Load directory: [wholeTextFiles](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.SparkContext.wholeTextFiles.html)
+```
+text_files = sc.wholeTextFiles('file:///food/')
+```
+
+Save: [saveAsTextFile](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.saveAsTextFile.html)
+```
+rdd = sc.parallelize(range(20)).saveAsTextFile('file:///numbers/')
+```
+
+Questions:
+- How many files does `sc.parallelize(range(20)).saveAsTextFile('file:///numbers/')` produce?
+- What behaviour do you anticipate if you run `sc.wholeTextFiles('file:///food/')` containing > 50GB of files?
+
+
+#### **7.1.2 JSON**
+Load data:
+```
+import json
+data = sc.parallelize(['[{"age":31}]', '[{"age":33}]']).map(lambda x: json.loads(x))
+```
+
+Save data:
+```
+data.map(lambda x: json.dumps(x)).saveAsTextFile('file:///numbers')
+```
+
+### **7.1.3 CSV**
+Conser using data frames API instead:
+```
+def load_records(file_content):
+    """Parse file to records"""
+    ...
+
+records = sc.wholeTextFiles(inputFile).flatMap(load_records)
+```
+
+```
+def write_records(records):
+    """Write out CSV lines"""
+    ...
+
+data.mapPartitions(write_records).saveAsTextFile(output_file)
+```
+
+### 7.2 Storage Systems
+
+#### **7.2.1 HDFS**
+We already know this. Ensure setting correct `SPARK_HADOOP_VERSION`.
+```
+hdfs://master:port/path
+```
+
+#### **7.2.2 S3**
+Ensure setting `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`:
+```
+s3n://bucket/my-files/*.txt.
+```
+#### **7.2.3 Cassandra**
+
+
+#### **7.2.4 HBase**
+
+
+## 8. Data Frames API
+Load CSV: [read](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.SparkSession.read.html) and [DataFrameRead](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrameReader.csv.html)
+```
+df = spark.read.csv("file:///fruits.csv")
+```
+
+[show](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.show.html)
+```
+df.show()
+
+df.show(2)
+```
+
+[columns](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.columns.html)
+```
+df.columns
+```
+
+[dtypes](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.dtypes.html)
+```
+df.dtypes
+```
+
+[toDF](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.toDF.html)
+```
+df.toDF('name', 'id', 'sweet').show()
+```
+
+Rename column: [withColumnRenamed](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.withColumnRenamed.html)
+```
+df.withColumnRenamed('_c2', 'sweet').collect()
+```
+
+Drop column: [drop](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.drop.html)
+```
+df.drop('_c1').collect()
+```
+
+Filter: [filter](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.filter.html)
+```
+df.filter(df._c0 == "melone").collect()
+
+df.filter('_c0 = "melone"').collect()
+
+df.filter((df._c1 >= 1) & (df._c2 == True)).collect()
+```
+
+Add column: [withColum](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.withColumn.html)
+```
+df.withColumn('stock', df._c1 +5).show()
+```
+
+Fill nulls: [fillna](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.fillna.html)
+```
+df.na.fill(50).show()
+```
+
+Aggregation: [groupby](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.groupBy.html)
+```
+df = df.withColumn('stock', df._c1 +5)
+df.groupby('_c2').agg({'stock': 'min'}).show()
+```
+
+Basic transformations: 
+
+```
+ df.describe().show()
+```
+
+SQL:
+```
+df.createOrReplaceTempView('foo')
+df2 = spark.sql('select * from foo')
+```
+
+## 9. Configuration
+
+- `spark.speculation`
