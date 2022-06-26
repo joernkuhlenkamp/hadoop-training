@@ -723,7 +723,7 @@ df.na.fill(50).show()
 Aggregation: [groupby](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.groupBy.html)
 ```
 df = df.withColumn('stock', df._c1 +5)
-df.groupby('_c2').agg({'stock': 'min'}).show()
+df2 == df.groupby('_c2').agg({'stock': 'min'}).show()
 ```
 Example Functions:
 - [abs](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.abs.html#)
@@ -731,6 +731,22 @@ Example Functions:
 - [avg](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.avg.html)
 - [stddev](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.stddev.html)
 - ...
+
+Query Plan: [explain](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.explain.html)
+```
+df2.explain()
+
+df2.explain(True)
+
+df2.explain(mode="formatted")
+```
+Modes:
+- **simple**: Print only a physical plan.
+- **extended**: Print both logical and physical plans.
+- **codegen**: Print a physical plan and generated codes if they are available.
+- **cost**: Print a logical plan and statistics if they are available.
+- **formatted**: Split explain output into two sections: a physical plan outline and node details.
+
 
 SQL:
 ```
