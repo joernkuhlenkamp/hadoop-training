@@ -132,50 +132,64 @@ cocktail_fruits = cherry_lines.union(melone_lines)
 cocktail_fruits.count()
 cocktail_fruits.first()
 ```
-What is the execution DAG?
+Questions:
+- What is the execution DAG?
 
-Create example rdd:
+#### 4.2.1 Single RDD
+
+Create example rdd: [parallelize](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.SparkContext.parallelize.html)
 ```
 rdd = sc.parallelize([1,2,3,3])
 ```
 
+[map](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.map.html)
 ```
 map_rdd = rdd.map(x => x + 1)
 ```
 
+[flatMap](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.flatMap.html)
 ```
 flat_map_rdd = flatMap(lambda x: (x, x+1))
 ```
 
+[filter](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.filter.html)
 ```
 filter_rdd = rdd.filter(lambda x: x != 3)
 ```
 
+[distinct](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.distinct.html#)
 ```
 distinct_rdd=rdd.distinct()
 ```
 
+[sample](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.sample.html)
 ```
 sample_rdd = rdd.sample(False, 0.5)
 ```
+
+#### **4.2.2 Two RDDs**
 
 ```
 rdd1=sc.parallelize([1,2,3])
 rdd2=sc.parallelize([3,4,5])
 ```
 
+[union](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.SparkContext.union.html)
 ```
 union_rdd = rdd1.union(rdd2)
 ```
 
+[intersection](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.intersection.html)
 ```
 intersection_rdd = rdd1.intersection(rdd2)
 ```
 
+[subtract](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.subtract.html)
 ```
 substract_rdd = rdd1.subtract(rdd2)
 ```
 
+[cartesian](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.cartesian.html)
 ```
 cartesian_rdd = rdd1.cartesian(rdd2)
 ```
@@ -584,7 +598,7 @@ data.map(lambda x: json.dumps(x)).saveAsTextFile('file:///numbers')
 ```
 
 ### **7.1.3 CSV**
-Conser using data frames API instead:
+Consider using data frames API instead:
 ```
 def load_records(file_content):
     """Parse file to records"""
@@ -621,9 +635,23 @@ s3n://bucket/my-files/*.txt.
 
 
 ## 8. Data Frames API
-Load CSV: [read](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.SparkSession.read.html) and [DataFrameRead](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrameReader.csv.html)
+Load CSV: [SparSession](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.SparkSession.html), [read](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.SparkSession.read.html), [DataFrameReader](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrameReader.csv.html), and [DataFrameReader.csv](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrameReader.csv.html)
 ```
 df = spark.read.csv("file:///fruits.csv")
+```
+
+[Data Source Option](https://spark.apache.org/docs/latest/sql-data-sources-csv.html#data-source-option)
+```
+os.system('echo "name, id, is_sweet" > /food/fruits_header.csv')
+os.system('echo "melone, 1, True" >> /food/fruits_header.csv')
+os.system('echo "cherry, 2, True" >> /food/fruits_header.csv')
+os.system('echo "tomato, 3, False" >> /food/fruits_header.csv')
+os.system('echo "coconut, 5," >> /food/fruits_header.csv')
+
+parsed = spark.read.\
+    option("header", "true").\
+    option("inferSchema", "true").\
+    csv("file:////food/fruits_header.csv")
 ```
 
 [show](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.show.html)
@@ -631,6 +659,16 @@ df = spark.read.csv("file:///fruits.csv")
 df.show()
 
 df.show(2)
+```
+
+[count](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.count.html)
+```
+df.count()
+```
+
+[printSchema](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.printSchema.html)
+```
+df.printSchema()
 ```
 
 [columns](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.columns.html)
@@ -643,7 +681,12 @@ df.columns
 df.dtypes
 ```
 
-[toDF](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.toDF.html)
+[cache](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.cache.html)
+```
+df.cache()
+```
+
+New DF with columns: [toDF](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.toDF.html)
 ```
 df.toDF('name', 'id', 'sweet').show()
 ```
@@ -682,17 +725,17 @@ Aggregation: [groupby](https://spark.apache.org/docs/3.2.0/api/python/reference/
 df = df.withColumn('stock', df._c1 +5)
 df.groupby('_c2').agg({'stock': 'min'}).show()
 ```
-
-Basic transformations: 
-
-```
- df.describe().show()
-```
+Example Functions:
+- [abs](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.abs.html#)
+- [acos](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.acos.html)
+- [avg](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.avg.html)
+- [stddev](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.stddev.html)
+- ...
 
 SQL:
 ```
-df.createOrReplaceTempView('foo')
-df2 = spark.sql('select * from foo')
+df.createOrReplaceTempView('fruits')
+df2 = spark.sql('select * from fruits')
 ```
 
 ## 9. Configuration
