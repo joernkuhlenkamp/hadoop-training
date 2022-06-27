@@ -730,7 +730,7 @@ Aggregation: [groupby](https://spark.apache.org/docs/3.2.0/api/python/reference/
 df = df.withColumn('stock', df._c1 +5)
 df2 == df.groupby('_c2').agg({'stock': 'min'}).show()
 ```
-Example Functions:
+Example Functions ([complete list](https://spark.apache.org/docs/3.2.0/api/python/reference/pyspark.sql.html#functions)):
 - [abs](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.abs.html#)
 - [acos](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.acos.html)
 - [avg](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.functions.avg.html)
