@@ -593,6 +593,8 @@ Questions:
 
 
 #### **7.1.2 JSON**
+Consider using [Spark SQL](https://spark.apache.org/docs/latest/sql-data-sources-json.html):
+
 Load data:
 ```
 import json
@@ -640,6 +642,10 @@ Select database connector. No batteries included with pyspark.
 
 
 ## 8. Data Frames API
+
+### 8.1 Load Data
+[Supported Data Sources](https://spark.apache.org/docs/latest/sql-data-sources.html)
+
 Load CSV: [SparSession](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.SparkSession.html), [read](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.SparkSession.read.html), [DataFrameReader](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrameReader.csv.html), and [DataFrameReader.csv](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrameReader.csv.html)
 ```
 df = spark.read.csv("file:///fruits.csv")
@@ -658,6 +664,8 @@ parsed = spark.read.\
     option("inferSchema", "true").\
     csv("file:////food/fruits_header.csv")
 ```
+
+### 8.2 Working with Data Frames
 
 [show](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.sql.DataFrame.show.html)
 ```
