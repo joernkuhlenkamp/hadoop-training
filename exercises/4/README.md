@@ -16,6 +16,7 @@ Add ports to `docker-compose.yml` file using `vi`:
 ...
 - "4040:4040"
 - "4141:4141"
+...
 ```
 
 Start cluster:
@@ -137,7 +138,7 @@ Questions:
 
 #### 4.2.1 Single RDD
 
-Create example rdd: [parallelize](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.SparkContext.parallelize.html)
+Create RDDs: [parallelize](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.SparkContext.parallelize.html)
 ```
 rdd = sc.parallelize([1,2,3,3])
 ```
@@ -159,7 +160,7 @@ filter_rdd = rdd.filter(lambda x: x != 3)
 
 [distinct](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.distinct.html#)
 ```
-distinct_rdd=rdd.distinct()
+distinct_rdd = rdd.distinct()
 ```
 
 [sample](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.sample.html)
@@ -489,7 +490,7 @@ rdd = sc.parallelize(range(1_000_000))
 rdd.getNumPartitions()
 ```
 
-[glom](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.partitionBy.html)
+[glom](https://spark.apache.org/docs/3.2.0/api/python/reference/api/pyspark.RDD.glom.html)
 ```
 rdd = sc.parallelize(range(20))
 glom_rdd = rdd.glom()
@@ -510,6 +511,11 @@ rdd.getNumPartitions()
 
 rdd.repartition(2).getNumPartitions().getNumPartitions()
 ```
+
+Questions:
+- How does `coalesce` relate to repartition?
+
+Some functions can leverage knowleadge on partitions.
 
 Example functions leveraging knowledge on a partitioner:
 - `cogroup()`
@@ -582,6 +588,7 @@ rdd = sc.parallelize(range(20)).saveAsTextFile('file:///numbers/')
 
 Questions:
 - How many files does `sc.parallelize(range(20)).saveAsTextFile('file:///numbers/')` produce?
+- How does this behaviour relate to MapReduce?
 - What behaviour do you anticipate if you run `sc.wholeTextFiles('file:///food/')` containing > 50GB of files?
 
 
@@ -598,7 +605,7 @@ data.map(lambda x: json.dumps(x)).saveAsTextFile('file:///numbers')
 ```
 
 ### **7.1.3 CSV**
-Consider using data frames API instead:
+Consider using Data Frames API instead! If you must, do something along the line off:
 ```
 def load_records(file_content):
     """Parse file to records"""
@@ -628,10 +635,8 @@ Ensure setting `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`:
 ```
 s3n://bucket/my-files/*.txt.
 ```
-#### **7.2.3 Cassandra**
-
-
-#### **7.2.4 HBase**
+#### **7.2.3 Cassandra/Hbase**
+Select database connector. No batteries included with pyspark.
 
 
 ## 8. Data Frames API
