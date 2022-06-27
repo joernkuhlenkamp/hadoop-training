@@ -2,10 +2,9 @@
 
 A Docker-based Hadoop-cluster for education, training, and testing.
 
-## Prerequisites
+## Requirements
 This setup has been tested on Docker host machines with the below specifications.
-While it should work on a number of additonal setups, additional configuration
-and sizing might be necessary.
+While it should work on a number of additonal setups, additional configuration and sizing might be necessary.
 
 - Computing Resources
   - Architecture: amd64
