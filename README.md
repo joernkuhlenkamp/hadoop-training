@@ -71,22 +71,22 @@ cd hadoop-training
 
 Deploy local cluster <span style="color:grey">(container host)</span>:
 ```
-docker compose up
+sudo docker compose up -d
 ```
 
 List networks created by Docker <span style="color:grey">(container host)</span>:
 ```
-docker network list
+sudo docker network list
 ```
 
 View running containers <span style="color:grey">(container host)</span>:
 ```
-docker compose ps
+sudo docker compose ps
 ```
 
 Bash shell into the namenode container <span style="color:grey">(container host)</span>:
 ```
-docker exec -it nodename bash
+sudo docker exec -it namenode bash
 ```
 
 Leave shell and return to container host <span style="color:grey">(container/node)</span>:
@@ -96,12 +96,12 @@ exit
 
 Remove local cluster <span style="color:grey">(container host)</span>:
 ```
-docker compose down
+sudo docker compose down
 ```
 
 Remove all unused local volumes <span style="color:grey">(container host)</span>:
 ```
-docker volume prune
+sudo docker volume prune
 ```
 
 ## Web UIs

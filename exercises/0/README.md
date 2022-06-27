@@ -3,7 +3,7 @@
 ## Init
 Start the cluster. Log into the `namenode` container:
 ```
-docker exec -it namenode bash
+sudo docker exec -it namenode bash
 ```
 
 ## Local Testing
