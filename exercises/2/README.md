@@ -1,12 +1,11 @@
 # Exercise 2 - MapReduce
 
-## Setup
+## 1. Setup
 Start the cluster. Log into the `namenode` container:
 ```
 docker exec -it namenode bash
 ```
 
-## Prepare HDFS
 Create folders for job inputs:
 ```
 hdfs dfs -mkdir -p /exercise/2/input
@@ -16,7 +15,7 @@ Upload input files to HDFS:
 hdfs dfs -copyFromLocal /exercises/2/data/* /exercise/2/input
 ```
 
-# Local MapReduce
+## 2. Local MapReduce
 In the container, test the app without using Hadoop. To that extent, it is always
 usefull to have a small representative dataset at hand.
 
@@ -30,7 +29,7 @@ Test with a custom file:
 cat /exercises/2/data/images.csv | /exercises/2/app/mapper-csv.py | sort | /exercises/2/app/reducer-csv.py
 ```
 
-# MapReduce (Shell)
+## 3. MapReduce (Shell)
 
 ```
 mapred streaming \
@@ -44,9 +43,9 @@ mapred streaming \
 hdfs dfs -rm -R /exercise/2/output/wordcountplus
 ```
 
-# MapReduce (Python)
+## 4. MapReduce (Python)
 
-## Value Count
+### 4.1 Value Count
 We count the occurances of the same values in the images.csv file.
 ```
 mapred streaming \
@@ -63,7 +62,7 @@ Cleanup HDFS:
 hdfs dfs -rm -R /exercise/2/output/valuecount
 ```
 
-## Combiner
+### 4.2 Combiner
 We can use a combiner to reduce the amount of data for shuffling phase:
 ```
 mapred streaming \
@@ -81,7 +80,7 @@ Cleanup HDFS:
 hdfs dfs -rm -R /exercise/2/output/combiner
 ```
 
-## Increase Reducers
+### 4.3 Increase Reducers
 Horizontally scaling reducers can lift memory pressure on reducer nodes.
 It results in multiple output files.
 ```
@@ -105,7 +104,7 @@ Cleanup HDFS:
 hdfs dfs -rm -R /exercise/2/output/tworeducers
 ```
 
-## Broadcast Joint
+### 4.4 Broadcast Joint
 ```
 mapred streaming \
   -input /exercise/2/input/images.csv \
