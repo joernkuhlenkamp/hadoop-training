@@ -34,6 +34,11 @@ Enter Hive's shell:
 hive
 ```
 
+Run OS command:
+```
+! ls /;
+```
+
 Create table `x`:
 ```
 CREATE TABLE x (a INT);
@@ -60,14 +65,13 @@ Exit Hive's shell:
 exit;
 ```
 
-## 3. CLI
-TODO
 
-## Variables
+
+## 3. Environment Variables
 Four namespaces: [`hivevar`, `hiveconf`, `system`, `env`]
 Show and set variables using `SET`.
 
-### Show Variables
+### 3.1 Show Variables
 
 Enter Hive's shell:
 ```
@@ -94,7 +98,7 @@ Exit Hive's shell:
 exit;
 ```
 
-### Set Variables
+### 3.2 Set Variables
 Enter Hive's shell with additional variable `foo`:
 ```
 hive --define foo=bar
@@ -133,7 +137,7 @@ set env:HOME;
 set env:HOME=/root2;
 ```
 
-### Variable Substitution
+### 3.3 Variable Substitution
 Substitute prefixed variable:
 ```
 create table toss1(i int, ${hivevar:foo} string);
@@ -157,9 +161,9 @@ drop table toss2;
 describe toss2;
 ```
 
-### Submitting Queries
+### 3.4 Submitting Queries
 
-#### **From String**
+#### **3.4.1 From String**
 Submit query using option `-e`:
 ```
 hive -e "set hiveconf:hive.cli.print.current.db"
@@ -177,7 +181,7 @@ hive -S -e "set"
 hive -S -e "set" | grep hive.cli.print.current.db
 ```
 
-#### **From File**
+#### **3.4.2 From File**
 Save files using the suffixes `.q` or `.hql`:
 ```
 hive -f /path/to/file/withqueries.hql
@@ -253,10 +257,11 @@ DROP TABLE employees;
 ```
 
 Optional Exercises:
-- How can we separate fields as in CSVs?
+- How can we separate fields CSVs style?
 - How can we terminate keys with a double comma?
 - How would youe model a desk with n drawers?
 - Which string is valid "mystring" or 'mystring'?
+- What makes for "bad" termination symbols?
 
 
 
@@ -974,7 +979,7 @@ FROM employees
 LIMIT 2;
 ```
 
-### 7.1.4 **Column Alias**
+#### 7.1.4 **Column Alias**
 ```
 SELECT 
     upper(name),
@@ -985,7 +990,7 @@ FROM employees
 LIMIT 2;
 ```
 
-### 7.1.5 **Nested Select**
+#### 7.1.5 **Nested Select**
 ```
 FROM (
     SELECT
@@ -999,7 +1004,7 @@ SELECT e.name, e.salary_minus_fed_taxes
 WHERE e.salary_minus_fed_taxes > 70000;
 ```
 
-### 7.1.6 **Conditions**
+#### 7.1.6 **Conditions**
 ```
 SELECT name, salary,
     CASE
@@ -1203,30 +1208,11 @@ SELECT name, salary FROM employees
 WHERE cast(salary AS FLOAT) < 100000.0;
 ````
 
-Sampling
-TODO
 
 
 
-
-## 8. Views
-
-
-
-
-## 9. Indexes
-
-
-
-
-## 10. Schema Design
-
-
-
-
-## 11. Tuning
-
-
-
-
-## 12. Case Studies
+## 8. Further Reading:
+- Views
+- Tuning
+- Indexes
+- Schemas
